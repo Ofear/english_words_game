@@ -9,7 +9,7 @@
 <body>
     <div id="game-container">
         <h1>משחק חידון בשפה האנגלית</h1>
-        <div id="score">ניקוד: 0</div>
+        <div id="score">ניקוד: 0 | רצף: 0</div>
         <div id="name-area">
             <div id="name-display" style="display: none;"></div>
             <div id="name-input">
@@ -32,21 +32,30 @@
             <button class="grade-button" value="12">כיתה יב</button>
             <button style="grid-column: span 2" class="grade-button" value="all">אלף מילים</button>
         </div>
-        <button id="view-mistakes-btn" onclick="viewMistakes()">צפה בטעויות</button>
+        <div id="difficulty-selector">
+            <button class="difficulty-btn" id="easy-btn" value="easy">קל</button>
+            <button class="difficulty-btn active" id="medium-btn" value="medium">בינוני</button>
+            <button class="difficulty-btn" id="hard-btn" value="hard">קשה</button>
+        </div>
+        <button id="view-mistakes-btn">צפה בטעויות</button>
+        <button id="leaderboard-btn">לוח תוצאות</button>
+        <button id="challenge-mode-btn">מצב אתגר</button>
         <div id="loader">
             <div class="spinner"></div>
             <p>טוען מילים...</p>
         </div>
         <div id="quiz-area">
-            <button id="back-button" onclick="goBack()">&#10094;</button>
+            <button id="back-button" onclick="goBack()">&#10095;</button>
             <div id="question"></div>
             <div id="options"></div>
             <div id="timer">זמן שנותר: 10 שניות</div>
             <div id="success">נכון! עובר לשאלה הבאה...</div>
             <div id="failure">לא נכון! נסה שוב!</div>
+            <div id="progress-bar-container">
+                <div id="progress-bar"></div>
+            </div>
         </div>
         <div id="mistakes-area">
-            <button id="back-button" onclick="returnToQuiz()">&#10094;</button>
             <h2>טבלת טעויות</h2>
             <table id="mistakes-table">
                 <thead>
@@ -58,8 +67,23 @@
                 </thead>
                 <tbody id="mistakes-body"></tbody>
             </table>
+            <button onclick="returnToQuiz()">חזור לחידון</button>
+        </div>
+        <div id="leaderboard-area">
+            <h2>לוח תוצאות</h2>
+            <table id="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>דירוג</th>
+                        <th>שחקן</th>
+                        <th>ניקוד</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body"></tbody>
+            </table>
+            <button onclick="returnToQuiz()">חזור לחידון</button>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>
