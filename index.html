@@ -4,435 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>משחק חידון בשפה האנגלית</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f8ff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        #game-container {
-            text-align: center;
-            background-color: #ffffff;
-            border: 2px solid #333;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            width: 90%;
-            max-width: 600px;
-            position: relative;
-        }
-        h1 {
-            color: #333;
-            margin-top: 0;
-        }
-        #question {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-        .option {
-            display: block;
-            background-color: #eee;
-            padding: 10px 20px;
-            margin: 10px 0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .option:hover {
-            background-color: #c0ebd9;
-        }
-        #success, #failure {
-            font-size: 1.2rem;
-            margin-top: 15px;
-            display: none;
-        }
-        #success {
-            color: green;
-        }
-        #failure {
-            color: red;
-        }
-        #score {
-            font-size: 1rem;
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            color: black;
-            padding: 5px 5px;
-            border: 1px solid black;
-            border-radius: 5px;
-        }
-        #grade-buttons {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .grade-button, #back-button, #edit-name-btn {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background-color 0.3s;
-        }
-        .grade-button:hover, #back-button:hover, #edit-name-btn:hover {
-            background-color: #45a049;
-        }
-        #back-button {
-            background-color: transparent;
-            color: #333;
-            font-size: 24px;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 5px;
-            margin: 0;
-        }
-        #quiz-area {
-            display: none;
-        }
-        #name-input input {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-            width: 200px;
-            margin-right: 10px;
-        }
-        #name-input button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        #name-input button:hover {
-            background-color: #45a049;
-        }
-        #name-display {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-        #edit-name-btn {
-            background-color: transparent;
-            color: #333;
-            font-size: 16px;
-            padding: 5px;
-            margin-left: 10px;
-        }
-        #loader {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-        }
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        #timer {
-            font-size: 1.2rem;
-            margin-top: 15px;
-            color: #333;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<div id="game-container">
-    <h1>משחק חידון בשפה האנגלית</h1>
-    <div id="score">ניקוד: 0</div>
-    <div id="name-area">
-        <div id="name-display" style="display: none;"></div>
-        <div id="name-input">
-            <input type="text" id="player-name" placeholder="הכנס את שמך">
-            <button onclick="setPlayerName()">קבע שם</button>
+    <div id="game-container">
+        <h1>משחק חידון בשפה האנגלית</h1>
+        <div id="score">ניקוד: 0</div>
+        <div id="name-area">
+            <div id="name-display" style="display: none;"></div>
+            <div id="name-input">
+                <input type="text" id="player-name" placeholder="הכנס את שמך">
+                <button onclick="setPlayerName()">קבע שם</button>
+            </div>
         </div>
-        <br/>
+        <div id="grade-buttons">
+            <button class="grade-button" value="1">כיתה א</button>
+            <button class="grade-button" value="2">כיתה ב</button>
+            <button class="grade-button" value="3">כיתה ג</button>
+            <button class="grade-button" value="4">כיתה ד</button>
+            <button class="grade-button" value="5">כיתה ה</button>
+            <button class="grade-button" value="6">כיתה ו</button>
+            <button class="grade-button" value="7">כיתה ז</button>
+            <button class="grade-button" value="8">כיתה ח</button>
+            <button class="grade-button" value="9">כיתה ט</button>
+            <button class="grade-button" value="10">כיתה י</button>
+            <button class="grade-button" value="11">כיתה יא</button>
+            <button class="grade-button" value="12">כיתה יב</button>
+            <button style="grid-column: span 2" class="grade-button" value="all">אלף מילים</button>
+        </div>
+        <div id="loader">
+            <div class="spinner"></div>
+            <p>טוען מילים...</p>
+        </div>
+        <div id="quiz-area">
+            <button id="back-button" onclick="goBack()">&#10095;</button>
+            <div id="question"></div>
+            <div id="options"></div>
+            <div id="timer">זמן שנותר: 10 שניות</div>
+            <div id="success">נכון! עובר לשאלה הבאה...</div>
+            <div id="failure">לא נכון! נסה שוב!</div>
+            <button id="view-mistakes-btn" onclick="viewMistakes()">צפה בטעויות</button>
+        </div>
+        <div id="mistakes-area">
+            <h2>טבלת טעויות</h2>
+            <table id="mistakes-table">
+                <thead>
+                    <tr>
+                        <th>שאלה</th>
+                        <th>תשובה נכונה</th>
+                        <th>תשובה שגויה</th>
+                    </tr>
+                </thead>
+                <tbody id="mistakes-body"></tbody>
+            </table>
+            <button onclick="returnToQuiz()">חזור לחידון</button>
+        </div>
     </div>
-    <div id="grade-buttons">
-        <button class="grade-button" value="1">כיתה א</button>
-        <button class="grade-button" value="2">כיתה ב</button>
-        <button class="grade-button" value="3">כיתה ג</button>
-        <button class="grade-button" value="4">כיתה ד</button>
-        <button class="grade-button" value="5">כיתה ה</button>
-        <button class="grade-button" value="6">כיתה ו</button>
-        <button class="grade-button" value="7">כיתה ז</button>
-        <button class="grade-button" value="8">כיתה ח</button>
-        <button class="grade-button" value="9">כיתה ט</button>
-        <button class="grade-button" value="10">כיתה י</button>
-        <button class="grade-button" value="11">כיתה יא</button>
-        <button class="grade-button" value="12">כיתה יב</button>
-        <button style="grid-column: span 2" class="grade-button" value="all">אלף מילים</button>
-    </div>
-    <div id="loader">
-        <div class="spinner"></div>
-        <p>טוען מילים...</p>
-    </div>
-    <div id="quiz-area">
-        <button id="back-button" onclick="goBack()">&#10094;</button>
-        <div id="question"></div>
-        <div id="options"></div>
-        <div id="timer">זמן שנותר: 10 שניות</div>
-        <div id="success">נכון! עובר לשאלה הבאה...</div>
-        <div id="failure">לא נכון! נסה שוב!</div>
-    </div>
-</div>
-
-<script>
-    let currentWords = [];
-    let score = 0;
-    let playerName = "";
-    let timerInterval;
-    let timeLeft = 10;
-    let currentCorrectAnswer = "";
-    let isReverseQuestion = false;
-
-    function setPlayerName() {
-        const nameInput = document.getElementById("player-name");
-        playerName = nameInput.value.trim();
-        if (playerName) {
-            sessionStorage.setItem('playerName', playerName);
-            document.getElementById("name-input").style.display = "none";
-            const nameDisplay = document.getElementById("name-display");
-            nameDisplay.textContent = `שחקן: ${playerName}`;
-            nameDisplay.style.display = "inline";
-            const editButton = document.createElement("button");
-            editButton.innerHTML = "&#9998;"; // Pen icon
-            editButton.onclick = editName;
-            editButton.id = "edit-name-btn";
-            nameDisplay.appendChild(editButton);
-            document.getElementById("grade-buttons").style.display = "grid";
-            updateScore();
-        } else {
-            alert("אנא הכנס את שמך.");
-        }
-    }
-
-    function editName() {
-        const nameInput = document.getElementById("name-input");
-        const nameDisplay = document.getElementById("name-display");
-        const playerNameInput = document.getElementById("player-name");
-        
-        nameDisplay.style.display = "none";
-        nameInput.style.display = "block";
-        playerNameInput.value = playerName;
-        playerNameInput.focus();
-    }
-
-    async function loadWordsForGrade(grade) {
-        showLoader();
-        if (grade === 'all') {
-            try {
-                const response = await fetch('words/hebrew-english-translations-grade-all.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                hideLoader();
-                return data.words;
-            } catch (error) {
-                console.error('Error loading all words:', error);
-                hideLoader();
-                return [];
-            }
-        } else {
-            const words = [];
-            for (let i = 1; i <= grade; i++) {
-                try {
-                    const response = await fetch(`words/hebrew-english-translations-grade-${i}.json`);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    const data = await response.json();
-                    words.push(...data.words);
-                } catch (error) {
-                    console.error(`Error loading words for grade ${i}:`, error);
-                }
-            }
-            hideLoader();
-            return words;
-        }
-    }
-
-    function showLoader() {
-        document.getElementById('loader').style.display = 'block';
-        document.getElementById('grade-buttons').style.display = 'none';
-    }
-
-    function hideLoader() {
-        document.getElementById('loader').style.display = 'none';
-    }
-
-    document.querySelectorAll('.grade-button').forEach(button => {
-        button.addEventListener('click', async () => {
-            if (!playerName) {
-                alert("אנא הגדר את שמך לפני תחילת המשחק.");
-                return;
-            }
-            const selectedGrade = button.value;
-            currentWords = await loadWordsForGrade(selectedGrade);
-            if (currentWords.length > 0) {
-                shuffle(currentWords);
-                score = 0;
-                updateScore();
-                document.getElementById('grade-buttons').style.display = 'none';
-                document.getElementById('quiz-area').style.display = 'block';
-                loadQuestion();
-            } else {
-                alert("לא ניתן היה לטעון מילים. אנא נסה שוב.");
-                document.getElementById('grade-buttons').style.display = 'grid';
-            }
-        });
-    });
-
-    function goBack() {
-        document.getElementById('quiz-area').style.display = 'none';
-        document.getElementById('grade-buttons').style.display = 'grid';
-        score = 0;
-        updateScore();
-        clearInterval(timerInterval);
-    }
-
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
-
-    function updateScore() {
-        const scoreElement = document.getElementById("score");
-        scoreElement.textContent = `ניקוד: ${score}`;
-    }
-
-    function loadQuestion() {
-        if (currentWords.length === 0) {
-            alert("אין מילים זמינות עבור בחירה זו.");
-            goBack();
-            return;
-        }
-
-        const questionElement = document.getElementById("question");
-        const optionsElement = document.getElementById("options");
-        const successMessage = document.getElementById("success");
-        const failureMessage = document.getElementById("failure");
-
-        successMessage.style.display = "none";
-        failureMessage.style.display = "none";
-
-        const currentWord = currentWords[Math.floor(Math.random() * currentWords.length)];
-        
-        // Randomly decide if this will be a reverse question (20% chance)
-        isReverseQuestion = Math.random() < 0.2;
-
-        if (isReverseQuestion) {
-            questionElement.textContent = `מה המילה באנגלית ל-"${currentWord.he}"?`;
-            currentCorrectAnswer = currentWord.en;
-        } else {
-            questionElement.textContent = `מה המילה בעברית ל-"${currentWord.en}"?`;
-            currentCorrectAnswer = currentWord.he;
-        }
-
-        const options = [currentCorrectAnswer];
-        while (options.length < 4) {
-            const randomWord = currentWords[Math.floor(Math.random() * currentWords.length)];
-            const randomOption = isReverseQuestion ? randomWord.en : randomWord.he;
-            if (!options.includes(randomOption)) {
-                options.push(randomOption);
-            }
-        }
-
-        shuffle(options);
-
-        optionsElement.innerHTML = '';
-        options.forEach(option => {
-            const optionElement = document.createElement("div");
-            optionElement.classList.add("option");
-            optionElement.textContent = option;
-            optionElement.onclick = () => checkAnswer(option, currentCorrectAnswer);
-            optionsElement.appendChild(optionElement);
-        });
-
-        startTimer();
-    }
-
-    function checkAnswer(selected, correct) {
-        clearInterval(timerInterval);
-        const successMessage = document.getElementById("success");
-        const failureMessage = document.getElementById("failure");
-        if (selected === correct) {
-            successMessage.style.display = "block";
-            successMessage.textContent = "נכון! עובר לשאלה הבאה...";
-            score++;
-            updateScore();
-            setTimeout(() => {
-                loadQuestion();
-            }, 1000);
-        } else {
-            failureMessage.style.display = "block";
-            failureMessage.textContent = `לא נכון! התשובה הנכונה היא: ${correct}`;
-            setTimeout(() => {
-                loadQuestion();
-            }, 2000);
-        }
-    }
-
-    function startTimer() {
-        timeLeft = 10;
-        updateTimerDisplay();
-        clearInterval(timerInterval);
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            updateTimerDisplay();
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                checkAnswer("", currentCorrectAnswer);
-            }
-        }, 1000);
-    }
-
-    function updateTimerDisplay() {
-        const timerElement = document.getElementById("timer");
-        timerElement.textContent = `זמן שנותר: ${timeLeft} שניות`;
-    }
-
-    // Load player name from session storage if available
-    window.onload = function() {
-        const savedName = sessionStorage.getItem('playerName');
-        if (savedName) {
-            playerName = savedName;
-            document.getElementById("player-name").value = playerName;
-            setPlayerName();
-        }
-    };
-
-    // Initialize score display
-    updateScore();
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
