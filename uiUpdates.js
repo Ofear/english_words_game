@@ -9,7 +9,8 @@ export function updateScore() {
 export function updateProgressBar() {
     const progressBar = document.getElementById('progress-bar');
     const percentage = ((gameState.currentWords.length - gameState.wordsLeft) / gameState.currentWords.length) * 100;
-    progressBar.style.width = `${percentage}%`;
+    progressBar.style.width = `100%`;
+    progressBar.style.background = `linear-gradient(to right, lightblue ${100-percentage}%, lightgreen ${percentage})`;
     progressBar.textContent = `${gameState.wordsLeft} מילים נותרו`;
 }
 

@@ -38,7 +38,8 @@ export async function startChallengeMode() {
 async function loadWordsForChallenge() {
     // Load or shuffle words specifically for the challenge mode
     const words = await loadWordsForGrade('challenge');
-    return shuffle(words);  // Example: Use 'challenge' grade to filter words
+    shuffle(words);  // Example: Use 'challenge' grade to filter words
+    return words;
 }
 
 function loadChallengeQuestion() {

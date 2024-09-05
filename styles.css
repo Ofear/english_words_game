@@ -218,10 +218,9 @@ h1, h2 {
     background-color: #f9f9f9;
 }
 
-#view-mistakes-btn {
+#view-mistakes-btn, #leaderboard-btn, #challenge-mode-btn {
     margin-top: 20px;
     width: 100%;
-    max-width: 200px;
 }
 
 .difficulty-btn {
@@ -253,7 +252,7 @@ h1, h2 {
     text-decoration: none;
     display: inline-block;
     font-size: 14px;
-    margin-left: 10px;
+    margin-right: 10px;
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.3s;

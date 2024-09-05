@@ -24,7 +24,7 @@ export async function startGame(selectedGrade) {
         document.getElementById('leaderboard-btn').style.display = 'none';
         document.getElementById('challenge-mode-btn').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';
-        document.getElementById('difficulty-selector').style.display = 'block';
+        document.getElementById('difficulty-selector').style.display = 'none';
         loadQuestion();
     } else {
         alert("לא ניתן היה לטעון מילים. אנא נסה שוב.");
@@ -43,7 +43,7 @@ export function goBack() {
     document.getElementById('view-mistakes-btn').style.display = 'block';
     document.getElementById('leaderboard-btn').style.display = 'block';
     document.getElementById('challenge-mode-btn').style.display = 'block';
-    document.getElementById('difficulty-selector').style.display = 'none';
+    document.getElementById('difficulty-selector').style.display = 'block';
     clearInterval(gameState.timerInterval);
     gameSettings.isChallengeMode = false;
 }
