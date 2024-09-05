@@ -35,9 +35,9 @@ export function startChallengeMode() {
     loadChallengeQuestion();  // Load the first question for the challenge
 }
 
-function loadWordsForChallenge() {
+async function loadWordsForChallenge() {
     // Load or shuffle words specifically for the challenge mode
-    return shuffle(loadWordsForGrade('challenge'));  // Example: Use 'challenge' grade to filter words
+    return shuffle(await loadWordsForGrade('challenge'));  // Example: Use 'challenge' grade to filter words
 }
 
 function loadChallengeQuestion() {
