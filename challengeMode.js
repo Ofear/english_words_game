@@ -1,13 +1,81 @@
-import { gameSettings } from './main.js';
-import { loadQuestion } from './gameLogic.js';
+import { loadWordsForGrade, shuffle } from './wordUtils.js';
+import { updateScore, updateProgressBar } from './uiUpdates.js';
+import { saveScore } from './storage.js';
+import { stopGame } from './main.js';
+
+let challengeState = {
+    currentWords: [],
+    score: 0,
+    timeLeft: 60,  // Set a time limit for the challenge mode (e.g., 60 seconds)
+    timerInterval: null,
+    isChallengeOver: false
+};
 
 export function startChallengeMode() {
-    gameSettings.isChallengeMode = true;
-    gameSettings.challengeTimeLeft = 60; // 1 minute challenge
-    document.getElementById('grade-buttons').style.display = 'none';
-    document.getElementById('view-mistakes-btn').style.display = 'none';
-    document.getElementById('leaderboard-btn').style.display = 'none';
-    document.getElementById('challenge-mode-btn').style.display = 'none';
+    // Reset challenge state
+    challengeState.currentWords = loadWordsForChallenge();  // Load challenge-specific words
+    challengeState.score = 0;
+    challengeState.timeLeft = 60;  // Reset the time for the challenge
+    challengeState.isChallengeOver = false;
+
+    // Display the challenge UI and hide other game elements
     document.getElementById('quiz-area').style.display = 'block';
-    loadQuestion();
+    document.getElementById('grade-buttons').style.display = 'none';
+
+    // Start the challenge timer
+    challengeState.timerInterval = setInterval(() => {
+        challengeState.timeLeft -= 1;
+        updateProgressBar(challengeState.timeLeft);  // Update the progress bar with time left
+
+        if (challengeState.timeLeft <= 0) {
+            endChallengeMode();  // End challenge when time runs out
+        }
+    }, 1000);
+
+    loadChallengeQuestion();  // Load the first question for the challenge
+}
+
+function loadWordsForChallenge() {
+    // Load or shuffle words specifically for the challenge mode
+    return shuffle(loadWordsForGrade('challenge'));  // Example: Use 'challenge' grade to filter words
+}
+
+function loadChallengeQuestion() {
+    if (challengeState.currentWords.length === 0) {
+        // End the challenge if there are no more words
+        endChallengeMode();
+        return;
+    }
+
+    const word = challengeState.currentWords.pop();  // Get the next word
+    // Update UI with the new word (add your own logic to display the word)
+    document.getElementById('word-display').textContent = word;
+}
+
+function endChallengeMode() {
+    clearInterval(challengeState.timerInterval);  // Stop the timer
+    challengeState.isChallengeOver = true;
+
+    // Hide the quiz area and show the end screen
+    document.getElementById('quiz-area').style.display = 'none';
+    alert(`Challenge Over! Your score: ${challengeState.score}`);
+
+    // Optionally, save the challenge score to storage
+    saveScore('challenge-mode', challengeState.score);
+
+    // Call stopGame() to reset the game state
+    stopGame();
+}
+
+export function checkChallengeAnswer(userAnswer) {
+    if (challengeState.isChallengeOver) return;
+
+    const correctAnswer = challengeState.currentWords[challengeState.currentWords.length - 1];  // Get the current word's correct answer
+    if (userAnswer === correctAnswer) {
+        challengeState.score += 1;  // Update score for correct answer
+        updateScore(challengeState.score);
+    }
+
+    // Load the next question
+    loadChallengeQuestion();
 }

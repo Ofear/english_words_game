@@ -1,6 +1,6 @@
 export async function loadWordsForGrade(grade) {
     showLoader();
-    if (grade === 'all') {
+    if (grade === 'all' || grade === 'challenge') {
         try {
             const response = await fetch('words/hebrew-english-translations-grade-all.json');
             if (!response.ok) {
