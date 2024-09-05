@@ -98,6 +98,7 @@ document.querySelectorAll('.grade-button').forEach(button => {
             mistakes = [];
             updateScore();
             document.getElementById('grade-buttons').style.display = 'none';
+            document.getElementById('view-mistakes-btn').style.display = 'none';
             document.getElementById('quiz-area').style.display = 'block';
             loadQuestion();
         } else {
@@ -111,11 +112,35 @@ function goBack() {
     document.getElementById('quiz-area').style.display = 'none';
     document.getElementById('mistakes-area').style.display = 'none';
     document.getElementById('grade-buttons').style.display = 'grid';
+    document.getElementById('view-mistakes-btn').style.display = 'block';
     score = 0;
-    mistakes = [];
     updateScore();
     clearInterval(timerInterval);
 }
+
+function viewMistakes() {
+    document.getElementById('grade-buttons').style.display = 'none';
+    document.getElementById('view-mistakes-btn').style.display = 'none';
+    document.getElementById('mistakes-area').style.display = 'block';
+    const mistakesBody = document.getElementById('mistakes-body');
+    mistakesBody.innerHTML = '';
+    mistakes.forEach(mistake => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${mistake.question}</td>
+            <td>${mistake.correctAnswer}</td>
+            <td>${mistake.userAnswer}</td>
+        `;
+        mistakesBody.appendChild(row);
+    });
+}
+
+function returnToQuiz() {
+    document.getElementById('mistakes-area').style.display = 'none';
+    document.getElementById('grade-buttons').style.display = 'grid';
+    document.getElementById('view-mistakes-btn').style.display = 'block';
+}
+
 
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -236,28 +261,6 @@ function startTimer() {
 function updateTimerDisplay() {
     const timerElement = document.getElementById("timer");
     timerElement.textContent = `זמן שנותר: ${timeLeft} שניות`;
-}
-
-function viewMistakes() {
-    document.getElementById('quiz-area').style.display = 'none';
-    document.getElementById('mistakes-area').style.display = 'block';
-    const mistakesBody = document.getElementById('mistakes-body');
-    mistakesBody.innerHTML = '';
-    mistakes.forEach(mistake => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${mistake.question}</td>
-            <td>${mistake.correctAnswer}</td>
-            <td>${mistake.userAnswer}</td>
-        `;
-        mistakesBody.appendChild(row);
-    });
-}
-
-function returnToQuiz() {
-    document.getElementById('mistakes-area').style.display = 'none';
-    document.getElementById('quiz-area').style.display = 'block';
-    loadQuestion();
 }
 
 // Initialize score display and load player name from session storage if available
