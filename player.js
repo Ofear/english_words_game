@@ -1,6 +1,6 @@
 import { updateScore } from './uiUpdates.js';
 import { mistakes, leaderboard, saveScore } from './storage.js';
-import { isPlaying } from './main.js';
+import { gameState, isPlaying } from './main.js';
 
 export function setPlayerName() {
     const nameInput = document.getElementById("player-name");
@@ -11,11 +11,11 @@ export function setPlayerName() {
         const nameDisplay = document.getElementById("name-display");
         nameDisplay.textContent = `שחקן: ${playerName}`;
         nameDisplay.style.display = "inline";
-        const editButton = document.createElement("button");
-        editButton.innerHTML = "&#9998;"; // Pen icon
-        editButton.onclick = editName;
-        editButton.id = "edit-name-btn";
-        nameDisplay.appendChild(editButton);
+        const changePlayerButton = document.createElement("button");
+        changePlayerButton.textContent = "החלף שחקן";
+        changePlayerButton.onclick = changePlayer;
+        changePlayerButton.id = "change-player-btn";
+        nameDisplay.appendChild(changePlayerButton);
         document.getElementById("grade-buttons").style.display = "grid";
         document.getElementById("view-mistakes-btn").style.display = "block";
         document.getElementById("leaderboard-btn").style.display = "block";
@@ -26,15 +26,16 @@ export function setPlayerName() {
         if (!leaderboard[playerName]) {
             leaderboard[playerName] = 0;
         }
+        gameState.playerName = playerName;
         updateScore();
     } else {
         alert("אנא הכנס את שמך.");
     }
 }
 
-export function editName() {
+export function changePlayer() {
     if (isPlaying()) {
-        alert("לא ניתן לשנות שם במהלך המשחק.");
+        alert("לא ניתן להחליף שחקן במהלך המשחק.");
         return;
     }
     const nameInput = document.getElementById("name-input");
@@ -43,6 +44,11 @@ export function editName() {
     
     nameDisplay.style.display = "none";
     nameInput.style.display = "block";
-    playerNameInput.value = playerName;
+    playerNameInput.value = "";
     playerNameInput.focus();
+    
+    // Reset game state for new player
+    gameState.score = 0;
+    gameState.streak = 0;
+    updateScore();
 }

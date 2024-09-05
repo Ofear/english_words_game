@@ -1,16 +1,16 @@
-import { score, streak, wordsLeft, currentWords, playerName } from './main.js';
+import { gameState, gameSettings } from './main.js';
 import { leaderboard } from './storage.js';
 
 export function updateScore() {
     const scoreElement = document.getElementById("score");
-    scoreElement.textContent = `ניקוד: ${score} | רצף: ${streak}`;
+    scoreElement.textContent = `ניקוד: ${gameState.score} | רצף: ${gameState.streak}`;
 }
 
 export function updateProgressBar() {
     const progressBar = document.getElementById('progress-bar');
-    const percentage = ((currentWords.length - wordsLeft) / currentWords.length) * 100;
+    const percentage = ((gameState.currentWords.length - gameState.wordsLeft) / gameState.currentWords.length) * 100;
     progressBar.style.width = `${percentage}%`;
-    progressBar.textContent = `${wordsLeft} מילים נותרו`;
+    progressBar.textContent = `${gameState.wordsLeft} מילים נותרו`;
 }
 
 export function viewLeaderboard() {

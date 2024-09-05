@@ -243,3 +243,22 @@ h1, h2 {
     background-color: #4CAF50;
     color: white;
 }
+
+#change-player-btn {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+#change-player-btn:hover {
+    background-color: #45a049;
+}

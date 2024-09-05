@@ -1,4 +1,4 @@
-import { setPlayerName, editName } from './player.js';
+import { setPlayerName, changePlayer } from './player.js';
 import { loadWordsForGrade, shuffle } from './wordUtils.js';
 import { updateScore, updateProgressBar, viewLeaderboard } from './uiUpdates.js';
 import { startGame, goBack, loadQuestion, checkAnswer, setDifficulty } from './gameLogic.js';
@@ -51,6 +51,7 @@ function initializeGame() {
     });
 
     document.getElementById('set-player-name-btn').addEventListener('click', setPlayerName);
+    document.getElementById('change-player-btn').addEventListener('click', changePlayer);
 
     document.getElementById('back-button').addEventListener('click', goBack);
 
