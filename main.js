@@ -23,8 +23,8 @@ export const gameSettings = {
     difficultyLevel: 'medium'
 };
 
-export const correctSound = new Audio('audio/correct-sound.mp3');
-export const incorrectSound = new Audio('audio/incorrect-sound.mp3');
+export const correctSound = new Audio('path/to/correct-sound.mp3');
+export const incorrectSound = new Audio('path/to/incorrect-sound.mp3');
 
 function initializeGame() {
     loadStoredData();
@@ -44,6 +44,10 @@ function initializeGame() {
     document.querySelectorAll('.return-to-quiz-btn').forEach(button => {
         button.addEventListener('click', returnToQuiz);
     });
+
+    document.getElementById('set-player-name-btn').addEventListener('click', setPlayerName);
+
+    document.getElementById('back-button').addEventListener('click', goBack);
 
     const savedName = sessionStorage.getItem('playerName');
     if (savedName) {

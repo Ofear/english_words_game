@@ -4,9 +4,9 @@ import { addMistake } from './mistakesHandler.js';
 import { leaderboard, saveScore } from './storage.js';
 import { 
     currentWords, score, playerName, timerInterval, timeLeft, currentCorrectAnswer, 
-    isReverseQuestion, currentWord, streak, difficultyLevel, wordsLeft, 
+    isReverseQuestion, currentWord, streak, wordsLeft, 
     isChallengeMode, challengeTimeLeft, correctSound, incorrectSound, updateGameState,
-    setGameDifficulty
+    gameSettings
 } from './main.js';
 
 export async function startGame(selectedGrade) {
@@ -161,7 +161,7 @@ export function checkAnswer(selectedElement, selected) {
 
 function calculateScore() {
     let baseScore = 10;
-    switch (difficultyLevel) {
+    switch (gameSettings.difficultyLevel) {
         case 'easy':
             baseScore = 5;
             break;
@@ -176,7 +176,7 @@ function startTimer() {
     if (isChallengeMode) {
         updateChallengeTimer();
     } else {
-        switch (difficultyLevel) {
+        switch (gameSettings.difficultyLevel) {
             case 'easy':
                 timeLeft = 15;
                 break;
@@ -221,7 +221,7 @@ function updateChallengeTimer() {
 }
 
 export function setDifficulty(level) {
-    setGameDifficulty(level);
+    gameSettings.difficultyLevel = level;
     document.querySelectorAll('.difficulty-btn').forEach(btn => {
         btn.classList.remove('active');
     });
