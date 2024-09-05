@@ -1,5 +1,5 @@
 import { mistakes, saveMistakes } from './storage.js';
-import { playerName } from './main.js';
+import { gameState } from './main.js';
 
 export function viewMistakes() {
     document.getElementById('grade-buttons').style.display = 'none';
@@ -43,6 +43,7 @@ export function returnToQuiz() {
 }
 
 export function addMistake(mistake) {
+    const { playerName } = gameState;
     if (!mistakes[playerName]) {
         mistakes[playerName] = [];
     }
