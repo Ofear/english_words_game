@@ -91,7 +91,7 @@ h1, h2 {
     margin-bottom: 20px;
 }
 
-.grade-button, #back-button, #edit-name-btn, #view-mistakes-btn {
+.grade-button, #back-button, #edit-name-btn, #view-mistakes-btn, #challenge-mode-btn, #leaderboard-btn {
     background-color: #4CAF50;
     border: none;
     color: white;
@@ -106,7 +106,7 @@ h1, h2 {
     transition: background-color 0.3s;
 }
 
-.grade-button:hover, #back-button:hover, #edit-name-btn:hover, #view-mistakes-btn:hover {
+.grade-button:hover, #back-button:hover, #edit-name-btn:hover, #view-mistakes-btn:hover, #challenge-mode-btn:hover, #leaderboard-btn:hover {
     background-color: #45a049;
 }
 
