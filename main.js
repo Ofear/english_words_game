@@ -16,7 +16,8 @@ export const gameState = {
     isReverseQuestion: false,
     currentWord: null,
     streak: 0,
-    wordsLeft: 0
+    wordsLeft: 0,
+    initialNumberOfWords: 0
 };
 
 export const gameSettings = {

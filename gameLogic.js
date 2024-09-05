@@ -17,6 +17,7 @@ export async function startGame(selectedGrade) {
         gameState.score = leaderboard[gameState.playerName] || 0;
         gameState.streak = 0;
         gameState.wordsLeft = gameState.currentWords.length;
+        gameState.initialNumberOfWords = gameState.currentWords.length;
         updateScore();
         updateProgressBar();
         document.getElementById('grade-buttons').style.display = 'none';
