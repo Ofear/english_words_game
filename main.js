@@ -51,7 +51,11 @@ function initializeGame() {
     });
 
     document.getElementById('set-player-name-btn').addEventListener('click', setPlayerName);
-    document.getElementById('change-player-btn').addEventListener('click', changePlayer);
+    const changePlayerBtn = document.getElementById('change-player-btn');
+if (changePlayerBtn) {
+    changePlayerBtn.addEventListener('click', changePlayer);
+}
+
 
     document.getElementById('back-button').addEventListener('click', goBack);
 
