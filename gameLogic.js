@@ -5,7 +5,8 @@ import { leaderboard, saveScore } from './storage.js';
 import { 
     currentWords, score, playerName, timerInterval, timeLeft, currentCorrectAnswer, 
     isReverseQuestion, currentWord, streak, difficultyLevel, wordsLeft, 
-    isChallengeMode, challengeTimeLeft, correctSound, incorrectSound, updateGameState
+    isChallengeMode, challengeTimeLeft, correctSound, incorrectSound, updateGameState,
+    setGameDifficulty
 } from './main.js';
 
 export async function startGame(selectedGrade) {
@@ -220,7 +221,7 @@ function updateChallengeTimer() {
 }
 
 export function setDifficulty(level) {
-    difficultyLevel = level;
+    setGameDifficulty(level);
     document.querySelectorAll('.difficulty-btn').forEach(btn => {
         btn.classList.remove('active');
     });

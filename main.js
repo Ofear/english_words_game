@@ -58,3 +58,7 @@ export function updateGameState(newScore, newStreak) {
 export function isPlaying() {
     return document.getElementById('quiz-area').style.display === 'block';
 }
+
+export function setGameDifficulty(level) {
+    difficultyLevel = level;
+}
