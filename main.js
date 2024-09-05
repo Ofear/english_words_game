@@ -47,17 +47,26 @@ function initializeGame() {
     });
 
     document.querySelectorAll('.return-to-quiz-btn').forEach(button => {
-        button.addEventListener('click', returnToQuiz);
+        button.addEventListener('click', () => {
+            stopGame();
+            returnToQuiz();  // Navigating back to the quiz or previous screen
+        });
     });
 
     document.getElementById('set-player-name-btn').addEventListener('click', setPlayerName);
     const changePlayerBtn = document.getElementById('change-player-btn');
-if (changePlayerBtn) {
-    changePlayerBtn.addEventListener('click', changePlayer);
+    if (changePlayerBtn) {
+        changePlayerBtn.addEventListener('click', changePlayer);
+    }
+
+
+const backButton = document.getElementById('back-button');
+if (backButton) {
+    backButton.addEventListener('click', () => {
+        stopGame();
+        goBack();  // Navigating back to the previous screen
+    });
 }
-
-
-    document.getElementById('back-button').addEventListener('click', goBack);
 
     const savedName = sessionStorage.getItem('playerName');
     if (savedName) {
@@ -68,6 +77,19 @@ if (changePlayerBtn) {
 
     updateDifficultyButtons(gameSettings.difficultyLevel);
 }
+
+function stopGame() {
+    // Clear any game timers
+    clearInterval(gameState.timerInterval);
+
+    // Hide the quiz area or other game elements
+    document.getElementById('quiz-area').style.display = 'none';
+
+    // Reset game state (optional, depending on your requirements)
+    gameState.currentWords = [];
+    gameState.timeLeft = 10;
+}
+
 
 window.onload = initializeGame;
 
