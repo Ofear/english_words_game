@@ -198,7 +198,9 @@ function checkAnswer(selectedElement, selected) {
     });
 
     if (selected === currentCorrectAnswer) {
-        selectedElement.classList.add('correct');
+        if (selectedElement) {
+            selectedElement.classList.add('correct');
+        }
         successMessage.style.display = "block";
         successMessage.textContent = "נכון! עובר לשאלה הבאה...";
         score++;
@@ -209,13 +211,15 @@ function checkAnswer(selectedElement, selected) {
             loadQuestion();
         }, 2000);
     } else {
-        selectedElement.classList.add('incorrect');
+        if (selectedElement) {
+            selectedElement.classList.add('incorrect');
+        }
         failureMessage.style.display = "block";
         failureMessage.textContent = `לא נכון! התשובה הנכונה היא: ${currentCorrectAnswer}`;
         mistakes.push({
             question: isReverseQuestion ? currentWord.he : currentWord.en,
             correctAnswer: currentCorrectAnswer,
-            userAnswer: selected
+            userAnswer: selected || "לא נענה"
         });
         setTimeout(() => {
             loadQuestion();
