@@ -5,8 +5,7 @@ import { leaderboard, saveScore } from './storage.js';
 import { 
     currentWords, score, playerName, timerInterval, timeLeft, currentCorrectAnswer, 
     isReverseQuestion, currentWord, streak, wordsLeft, 
-    isChallengeMode, challengeTimeLeft, correctSound, incorrectSound, updateGameState,
-    gameSettings
+    gameSettings, correctSound, incorrectSound, updateGameState
 } from './main.js';
 
 export async function startGame(selectedGrade) {
@@ -48,11 +47,11 @@ export function goBack() {
     document.getElementById('challenge-mode-btn').style.display = 'block';
     document.getElementById('difficulty-selector').style.display = 'none';
     clearInterval(timerInterval);
-    isChallengeMode = false;
+    gameSettings.isChallengeMode = false;
 }
 
 export function loadQuestion() {
-    if (currentWords.length === 0 || (isChallengeMode && challengeTimeLeft <= 0)) {
+    if (currentWords.length === 0 || (gameSettings.isChallengeMode && gameSettings.challengeTimeLeft <= 0)) {
         alert("כל הכבוד! סיימת את כל המילים.");
         goBack();
         return;
@@ -173,7 +172,7 @@ function calculateScore() {
 }
 
 function startTimer() {
-    if (isChallengeMode) {
+    if (gameSettings.isChallengeMode) {
         updateChallengeTimer();
     } else {
         switch (gameSettings.difficultyLevel) {
@@ -207,12 +206,12 @@ function updateTimerDisplay() {
 
 function updateChallengeTimer() {
     const timerElement = document.getElementById("timer");
-    timerElement.textContent = `זמן שנותר: ${challengeTimeLeft} שניות`;
+    timerElement.textContent = `זמן שנותר: ${gameSettings.challengeTimeLeft} שניות`;
     clearInterval(timerInterval);
     timerInterval = setInterval(() => {
-        challengeTimeLeft--;
-        timerElement.textContent = `זמן שנותר: ${challengeTimeLeft} שניות`;
-        if (challengeTimeLeft <= 0) {
+        gameSettings.challengeTimeLeft--;
+        timerElement.textContent = `זמן שנותר: ${gameSettings.challengeTimeLeft} שניות`;
+        if (gameSettings.challengeTimeLeft <= 0) {
             clearInterval(timerInterval);
             alert("זמן האתגר הסתיים!");
             goBack();
@@ -222,8 +221,4 @@ function updateChallengeTimer() {
 
 export function setDifficulty(level) {
     gameSettings.difficultyLevel = level;
-    document.querySelectorAll('.difficulty-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    document.getElementById(`${level}-btn`).classList.add('active');
 }

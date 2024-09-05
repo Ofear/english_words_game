@@ -223,3 +223,23 @@ h1, h2 {
     width: 100%;
     max-width: 200px;
 }
+
+.difficulty-btn {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: 2px solid #4CAF50;
+    background-color: white;
+    color: #4CAF50;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.difficulty-btn:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.difficulty-btn.active {
+    background-color: #4CAF50;
+    color: white;
+}
