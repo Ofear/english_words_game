@@ -76,6 +76,7 @@ if (backButton) {
     }
 
     updateDifficultyButtons(gameSettings.difficultyLevel);
+    document.getElementById('leaderboard-area').style.display = 'none';
 }
 
 export function stopGame() {
