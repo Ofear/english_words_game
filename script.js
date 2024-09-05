@@ -23,6 +23,7 @@ function setPlayerName() {
         editButton.id = "edit-name-btn";
         nameDisplay.appendChild(editButton);
         document.getElementById("grade-buttons").style.display = "grid";
+        document.getElementById("view-mistakes-btn").style.display = "block";
         updateScore();
     } else {
         alert("אנא הכנס את שמך.");
@@ -78,6 +79,7 @@ async function loadWordsForGrade(grade) {
 function showLoader() {
     document.getElementById('loader').style.display = 'block';
     document.getElementById('grade-buttons').style.display = 'none';
+    document.getElementById('view-mistakes-btn').style.display = 'none';
 }
 
 function hideLoader() {
@@ -104,6 +106,7 @@ document.querySelectorAll('.grade-button').forEach(button => {
         } else {
             alert("לא ניתן היה לטעון מילים. אנא נסה שוב.");
             document.getElementById('grade-buttons').style.display = 'grid';
+            document.getElementById('view-mistakes-btn').style.display = 'block';
         }
     });
 });
@@ -117,30 +120,6 @@ function goBack() {
     updateScore();
     clearInterval(timerInterval);
 }
-
-function viewMistakes() {
-    document.getElementById('grade-buttons').style.display = 'none';
-    document.getElementById('view-mistakes-btn').style.display = 'none';
-    document.getElementById('mistakes-area').style.display = 'block';
-    const mistakesBody = document.getElementById('mistakes-body');
-    mistakesBody.innerHTML = '';
-    mistakes.forEach(mistake => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${mistake.question}</td>
-            <td>${mistake.correctAnswer}</td>
-            <td>${mistake.userAnswer}</td>
-        `;
-        mistakesBody.appendChild(row);
-    });
-}
-
-function returnToQuiz() {
-    document.getElementById('mistakes-area').style.display = 'none';
-    document.getElementById('grade-buttons').style.display = 'grid';
-    document.getElementById('view-mistakes-btn').style.display = 'block';
-}
-
 
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -261,6 +240,29 @@ function startTimer() {
 function updateTimerDisplay() {
     const timerElement = document.getElementById("timer");
     timerElement.textContent = `זמן שנותר: ${timeLeft} שניות`;
+}
+
+function viewMistakes() {
+    document.getElementById('grade-buttons').style.display = 'none';
+    document.getElementById('view-mistakes-btn').style.display = 'none';
+    document.getElementById('mistakes-area').style.display = 'block';
+    const mistakesBody = document.getElementById('mistakes-body');
+    mistakesBody.innerHTML = '';
+    mistakes.forEach(mistake => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${mistake.question}</td>
+            <td>${mistake.correctAnswer}</td>
+            <td>${mistake.userAnswer}</td>
+        `;
+        mistakesBody.appendChild(row);
+    });
+}
+
+function returnToQuiz() {
+    document.getElementById('mistakes-area').style.display = 'none';
+    document.getElementById('grade-buttons').style.display = 'grid';
+    document.getElementById('view-mistakes-btn').style.display = 'block';
 }
 
 // Initialize score display and load player name from session storage if available

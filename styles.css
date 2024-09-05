@@ -110,19 +110,13 @@ h1, h2 {
     background-color: #45a049;
 }
 
-#view-mistakes-btn {
-    margin-top: 20px;
-    width: 100%;
-    max-width: 200px;
-}
-
 #back-button {
     background-color: lightblue;
     color: #333;
     font-size: 24px;
     position: absolute;
     top: 10px;
-    right: 10px;
+    left: 10px;
     padding: 5px;
     margin: 0;
 }
@@ -221,4 +215,6 @@ h1, h2 {
 
 #view-mistakes-btn {
     margin-top: 20px;
+    width: 100%;
+    max-width: 200px;
 }
