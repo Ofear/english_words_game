@@ -23,8 +23,8 @@ export const gameSettings = {
     difficultyLevel: 'medium'
 };
 
-export const correctSound = new Audio('path/to/correct-sound.mp3');
-export const incorrectSound = new Audio('path/to/incorrect-sound.mp3');
+export const correctSound = new Audio('audio/correct-sound.mp3');
+export const incorrectSound = new Audio('audio/incorrect-sound.mp3');
 
 function initializeGame() {
     loadStoredData();
