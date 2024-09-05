@@ -1,7 +1,7 @@
 import { loadWordsForGrade, shuffle } from './wordUtils.js';
 import { updateScore, updateProgressBar } from './uiUpdates.js';
 import { saveScore } from './storage.js';
-import { stopGame } from './main.js';
+import { gameState, stopGame } from './main.js';
 
 let challengeState = {
     currentWords: [],
@@ -62,7 +62,7 @@ function endChallengeMode() {
     alert(`Challenge Over! Your score: ${challengeState.score}`);
 
     // Optionally, save the challenge score to storage
-    saveScore('challenge-mode', challengeState.score);
+    saveScore(`אתגר-${gameState.playerName}`, challengeState.score);
 
     // Call stopGame() to reset the game state
     stopGame();
