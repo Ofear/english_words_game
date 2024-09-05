@@ -3,22 +3,20 @@ import { updateScore, updateProgressBar } from './uiUpdates.js';
 import { addMistake } from './mistakesHandler.js';
 import { leaderboard, saveScore } from './storage.js';
 import { 
-    currentWords, score, playerName, timerInterval, timeLeft, currentCorrectAnswer, 
-    isReverseQuestion, currentWord, streak, wordsLeft, 
-    gameSettings, correctSound, incorrectSound, updateGameState
+    gameState, gameSettings, correctSound, incorrectSound, updateGameState
 } from './main.js';
 
 export async function startGame(selectedGrade) {
-    if (!playerName) {
+    if (!gameState.playerName) {
         alert("אנא הגדר את שמך לפני תחילת המשחק.");
         return;
     }
-    currentWords = await loadWordsForGrade(selectedGrade);
-    if (currentWords.length > 0) {
-        shuffle(currentWords);
-        score = leaderboard[playerName] || 0;
-        streak = 0;
-        wordsLeft = currentWords.length;
+    gameState.currentWords = await loadWordsForGrade(selectedGrade);
+    if (gameState.currentWords.length > 0) {
+        shuffle(gameState.currentWords);
+        gameState.score = leaderboard[gameState.playerName] || 0;
+        gameState.streak = 0;
+        gameState.wordsLeft = gameState.currentWords.length;
         updateScore();
         updateProgressBar();
         document.getElementById('grade-buttons').style.display = 'none';
@@ -46,12 +44,12 @@ export function goBack() {
     document.getElementById('leaderboard-btn').style.display = 'block';
     document.getElementById('challenge-mode-btn').style.display = 'block';
     document.getElementById('difficulty-selector').style.display = 'none';
-    clearInterval(timerInterval);
+    clearInterval(gameState.timerInterval);
     gameSettings.isChallengeMode = false;
 }
 
 export function loadQuestion() {
-    if (currentWords.length === 0 || (gameSettings.isChallengeMode && gameSettings.challengeTimeLeft <= 0)) {
+    if (gameState.currentWords.length === 0 || (gameSettings.isChallengeMode && gameSettings.challengeTimeLeft <= 0)) {
         alert("כל הכבוד! סיימת את כל המילים.");
         goBack();
         return;
@@ -65,22 +63,22 @@ export function loadQuestion() {
     successMessage.style.display = "none";
     failureMessage.style.display = "none";
 
-    currentWord = currentWords[Math.floor(Math.random() * currentWords.length)];
+    gameState.currentWord = gameState.currentWords[Math.floor(Math.random() * gameState.currentWords.length)];
     
-    isReverseQuestion = Math.random() < 0.2;
+    gameState.isReverseQuestion = Math.random() < 0.2;
 
-    if (isReverseQuestion) {
-        questionElement.textContent = `מה המילה באנגלית ל-"${currentWord.he}"?`;
-        currentCorrectAnswer = currentWord.en;
+    if (gameState.isReverseQuestion) {
+        questionElement.textContent = `מה המילה באנגלית ל-"${gameState.currentWord.he}"?`;
+        gameState.currentCorrectAnswer = gameState.currentWord.en;
     } else {
-        questionElement.textContent = `מה המילה בעברית ל-"${currentWord.en}"?`;
-        currentCorrectAnswer = currentWord.he;
+        questionElement.textContent = `מה המילה בעברית ל-"${gameState.currentWord.en}"?`;
+        gameState.currentCorrectAnswer = gameState.currentWord.he;
     }
 
-    const options = [currentCorrectAnswer];
+    const options = [gameState.currentCorrectAnswer];
     while (options.length < 4) {
-        const randomWord = currentWords[Math.floor(Math.random() * currentWords.length)];
-        const randomOption = isReverseQuestion ? randomWord.en : randomWord.he;
+        const randomWord = gameState.currentWords[Math.floor(Math.random() * gameState.currentWords.length)];
+        const randomOption = gameState.isReverseQuestion ? randomWord.en : randomWord.he;
         if (!options.includes(randomOption)) {
             options.push(randomOption);
         }
@@ -106,7 +104,7 @@ export function loadQuestion() {
 }
 
 export function checkAnswer(selectedElement, selected) {
-    clearInterval(timerInterval);
+    clearInterval(gameState.timerInterval);
     const successMessage = document.getElementById("success");
     const failureMessage = document.getElementById("failure");
     const options = document.querySelectorAll('.option');
@@ -114,23 +112,23 @@ export function checkAnswer(selectedElement, selected) {
     options.forEach(option => {
         option.classList.add('disabled');
         option.onclick = null;
-        if (option.textContent === currentCorrectAnswer) {
+        if (option.textContent === gameState.currentCorrectAnswer) {
             option.classList.add('correct');
         }
     });
 
-    if (selected === currentCorrectAnswer) {
+    if (selected === gameState.currentCorrectAnswer) {
         if (selectedElement) {
             selectedElement.classList.add('correct');
         }
         successMessage.style.display = "block";
         successMessage.textContent = "נכון! עובר לשאלה הבאה...";
         correctSound.play();
-        score += calculateScore();
-        streak++;
-        updateGameState(score, streak);
-        currentWords = currentWords.filter(word => word !== currentWord);
-        wordsLeft--;
+        gameState.score += calculateScore();
+        gameState.streak++;
+        updateGameState(gameState.score, gameState.streak);
+        gameState.currentWords = gameState.currentWords.filter(word => word !== gameState.currentWord);
+        gameState.wordsLeft--;
         setTimeout(() => {
             loadQuestion();
         }, 2000);
@@ -139,13 +137,13 @@ export function checkAnswer(selectedElement, selected) {
             selectedElement.classList.add('incorrect');
         }
         failureMessage.style.display = "block";
-        failureMessage.textContent = `לא נכון! התשובה הנכונה היא: ${currentCorrectAnswer}`;
+        failureMessage.textContent = `לא נכון! התשובה הנכונה היא: ${gameState.currentCorrectAnswer}`;
         incorrectSound.play();
-        streak = 0;
-        updateGameState(score, streak);
+        gameState.streak = 0;
+        updateGameState(gameState.score, gameState.streak);
         addMistake({
-            question: isReverseQuestion ? currentWord.he : currentWord.en,
-            correctAnswer: currentCorrectAnswer,
+            question: gameState.isReverseQuestion ? gameState.currentWord.he : gameState.currentWord.en,
+            correctAnswer: gameState.currentCorrectAnswer,
             userAnswer: selected || "לא נענה"
         });
         setTimeout(() => {
@@ -168,7 +166,7 @@ function calculateScore() {
             baseScore = 15;
             break;
     }
-    return baseScore + Math.floor(streak / 5) * 5; // Streak bonus
+    return baseScore + Math.floor(gameState.streak / 5) * 5; // Streak bonus
 }
 
 function startTimer() {
@@ -177,22 +175,22 @@ function startTimer() {
     } else {
         switch (gameSettings.difficultyLevel) {
             case 'easy':
-                timeLeft = 15;
+                gameState.timeLeft = 15;
                 break;
             case 'medium':
-                timeLeft = 10;
+                gameState.timeLeft = 10;
                 break;
             case 'hard':
-                timeLeft = 7;
+                gameState.timeLeft = 7;
                 break;
         }
         updateTimerDisplay();
-        clearInterval(timerInterval);
-        timerInterval = setInterval(() => {
-            timeLeft--;
+        clearInterval(gameState.timerInterval);
+        gameState.timerInterval = setInterval(() => {
+            gameState.timeLeft--;
             updateTimerDisplay();
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
+            if (gameState.timeLeft <= 0) {
+                clearInterval(gameState.timerInterval);
                 checkAnswer(null, "");
             }
         }, 1000);
@@ -201,18 +199,18 @@ function startTimer() {
 
 function updateTimerDisplay() {
     const timerElement = document.getElementById("timer");
-    timerElement.textContent = `זמן שנותר: ${timeLeft} שניות`;
+    timerElement.textContent = `זמן שנותר: ${gameState.timeLeft} שניות`;
 }
 
 function updateChallengeTimer() {
     const timerElement = document.getElementById("timer");
     timerElement.textContent = `זמן שנותר: ${gameSettings.challengeTimeLeft} שניות`;
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
+    clearInterval(gameState.timerInterval);
+    gameState.timerInterval = setInterval(() => {
         gameSettings.challengeTimeLeft--;
         timerElement.textContent = `זמן שנותר: ${gameSettings.challengeTimeLeft} שניות`;
         if (gameSettings.challengeTimeLeft <= 0) {
-            clearInterval(timerInterval);
+            clearInterval(gameState.timerInterval);
             alert("זמן האתגר הסתיים!");
             goBack();
         }

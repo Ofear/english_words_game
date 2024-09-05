@@ -6,16 +6,18 @@ import { viewMistakes, returnToQuiz } from './mistakesHandler.js';
 import { startChallengeMode } from './challengeMode.js';
 import { loadStoredData, saveScore } from './storage.js';
 
-export let currentWords = [];
-export let score = 0;
-export let playerName = "";
-export let timerInterval;
-export let timeLeft = 10;
-export let currentCorrectAnswer = "";
-export let isReverseQuestion = false;
-export let currentWord = null;
-export let streak = 0;
-export let wordsLeft = 0;
+export const gameState = {
+    currentWords: [],
+    score: 0,
+    playerName: "",
+    timerInterval: null,
+    timeLeft: 10,
+    currentCorrectAnswer: "",
+    isReverseQuestion: false,
+    currentWord: null,
+    streak: 0,
+    wordsLeft: 0
+};
 
 export const gameSettings = {
     difficultyLevel: 'medium',
@@ -54,8 +56,8 @@ function initializeGame() {
 
     const savedName = sessionStorage.getItem('playerName');
     if (savedName) {
-        playerName = savedName;
-        document.getElementById("player-name").value = playerName;
+        gameState.playerName = savedName;
+        document.getElementById("player-name").value = gameState.playerName;
         setPlayerName();
     }
 
@@ -65,9 +67,9 @@ function initializeGame() {
 window.onload = initializeGame;
 
 export function updateGameState(newScore, newStreak) {
-    score = newScore;
-    streak = newStreak;
-    saveScore(playerName, score);
+    gameState.score = newScore;
+    gameState.streak = newStreak;
+    saveScore(gameState.playerName, gameState.score);
     updateScore();
 }
 
