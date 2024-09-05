@@ -5,7 +5,7 @@ let timerInterval;
 let timeLeft = 10;
 let currentCorrectAnswer = "";
 let isReverseQuestion = false;
-let mistakes = [];
+let mistakes = {};
 let currentWord = null;
 
 function setPlayerName() {
@@ -25,6 +25,9 @@ function setPlayerName() {
         document.getElementById("grade-buttons").style.display = "grid";
         document.getElementById("view-mistakes-btn").style.display = "block";
         updateScore();
+        if (!mistakes[playerName]) {
+            mistakes[playerName] = [];
+        }
     } else {
         alert("אנא הכנס את שמך.");
     }
@@ -97,7 +100,6 @@ document.querySelectorAll('.grade-button').forEach(button => {
         if (currentWords.length > 0) {
             shuffle(currentWords);
             score = 0;
-            mistakes = [];
             updateScore();
             document.getElementById('grade-buttons').style.display = 'none';
             document.getElementById('view-mistakes-btn').style.display = 'none';
@@ -205,7 +207,6 @@ function checkAnswer(selectedElement, selected) {
         successMessage.textContent = "נכון! עובר לשאלה הבאה...";
         score++;
         updateScore();
-        // Remove the correctly answered word from the list
         currentWords = currentWords.filter(word => word !== currentWord);
         setTimeout(() => {
             loadQuestion();
@@ -216,7 +217,7 @@ function checkAnswer(selectedElement, selected) {
         }
         failureMessage.style.display = "block";
         failureMessage.textContent = `לא נכון! התשובה הנכונה היא: ${currentCorrectAnswer}`;
-        mistakes.push({
+        addMistake({
             question: isReverseQuestion ? currentWord.he : currentWord.en,
             correctAnswer: currentCorrectAnswer,
             userAnswer: selected || "לא נענה"
@@ -252,15 +253,28 @@ function viewMistakes() {
     document.getElementById('mistakes-area').style.display = 'block';
     const mistakesBody = document.getElementById('mistakes-body');
     mistakesBody.innerHTML = '';
-    mistakes.forEach(mistake => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${mistake.question}</td>
-            <td>${mistake.correctAnswer}</td>
-            <td>${mistake.userAnswer}</td>
-        `;
-        mistakesBody.appendChild(row);
-    });
+
+    for (const [player, playerMistakes] of Object.entries(mistakes)) {
+        if (playerMistakes.length > 0) {
+            const playerHeader = document.createElement('tr');
+            playerHeader.innerHTML = `<th colspan="3">${player}</th>`;
+            mistakesBody.appendChild(playerHeader);
+
+            playerMistakes.forEach(mistake => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${mistake.question}</td>
+                    <td>${mistake.correctAnswer}</td>
+                    <td>${mistake.userAnswer}</td>
+                `;
+                mistakesBody.appendChild(row);
+            });
+        }
+    }
+
+    if (mistakesBody.children.length === 0) {
+        mistakesBody.innerHTML = '<tr><td colspan="3">אין טעויות להצגה</td></tr>';
+    }
 }
 
 function returnToQuiz() {
@@ -269,7 +283,18 @@ function returnToQuiz() {
     document.getElementById('view-mistakes-btn').style.display = 'block';
 }
 
-// Initialize score display and load player name from session storage if available
+function saveMistakes() {
+    localStorage.setItem('mistakes', JSON.stringify(mistakes));
+}
+
+function addMistake(mistake) {
+    if (!mistakes[playerName]) {
+        mistakes[playerName] = [];
+    }
+    mistakes[playerName].push(mistake);
+    saveMistakes();
+}
+
 window.onload = function() {
     updateScore();
     const savedName = sessionStorage.getItem('playerName');
@@ -277,5 +302,9 @@ window.onload = function() {
         playerName = savedName;
         document.getElementById("player-name").value = playerName;
         setPlayerName();
+    }
+    const savedMistakes = localStorage.getItem('mistakes');
+    if (savedMistakes) {
+        mistakes = JSON.parse(savedMistakes);
     }
 };
