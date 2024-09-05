@@ -11,9 +11,9 @@ let challengeState = {
     isChallengeOver: false
 };
 
-export function startChallengeMode() {
+export async function startChallengeMode() {
     // Reset challenge state
-    challengeState.currentWords = loadWordsForChallenge();  // Load challenge-specific words
+    challengeState.currentWords = await loadWordsForChallenge();  // Load challenge-specific words
     challengeState.score = 0;
     challengeState.timeLeft = 60;  // Reset the time for the challenge
     challengeState.isChallengeOver = false;
@@ -37,7 +37,8 @@ export function startChallengeMode() {
 
 async function loadWordsForChallenge() {
     // Load or shuffle words specifically for the challenge mode
-    return shuffle(await loadWordsForGrade('challenge'));  // Example: Use 'challenge' grade to filter words
+    const words = await loadWordsForGrade('challenge');
+    return shuffle(words);  // Example: Use 'challenge' grade to filter words
 }
 
 function loadChallengeQuestion() {
