@@ -78,7 +78,7 @@ if (backButton) {
     updateDifficultyButtons(gameSettings.difficultyLevel);
 }
 
-function stopGame() {
+export function stopGame() {
     // Clear any game timers
     clearInterval(gameState.timerInterval);
 
