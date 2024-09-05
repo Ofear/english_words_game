@@ -15,13 +15,16 @@ export let currentCorrectAnswer = "";
 export let isReverseQuestion = false;
 export let currentWord = null;
 export let streak = 0;
-export let difficultyLevel = 'medium';
 export let wordsLeft = 0;
 export let isChallengeMode = false;
 export let challengeTimeLeft = 0;
 
-export const correctSound = new Audio('path/to/correct-sound.mp3');
-export const incorrectSound = new Audio('path/to/incorrect-sound.mp3');
+export const gameSettings = {
+    difficultyLevel: 'medium'
+};
+
+export const correctSound = new Audio('audio/correct-sound.mp3');
+export const incorrectSound = new Audio('audio/incorrect-sound.mp3');
 
 function initializeGame() {
     loadStoredData();
@@ -36,6 +39,10 @@ function initializeGame() {
 
     document.querySelectorAll('.difficulty-btn').forEach(button => {
         button.addEventListener('click', () => setDifficulty(button.value));
+    });
+
+    document.querySelectorAll('.return-to-quiz-btn').forEach(button => {
+        button.addEventListener('click', returnToQuiz);
     });
 
     const savedName = sessionStorage.getItem('playerName');
@@ -57,8 +64,4 @@ export function updateGameState(newScore, newStreak) {
 
 export function isPlaying() {
     return document.getElementById('quiz-area').style.display === 'block';
-}
-
-export function setGameDifficulty(level) {
-    difficultyLevel = level;
 }

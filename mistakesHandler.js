@@ -35,6 +35,7 @@ export function viewMistakes() {
 
 export function returnToQuiz() {
     document.getElementById('mistakes-area').style.display = 'none';
+    document.getElementById('leaderboard-area').style.display = 'none';
     document.getElementById('grade-buttons').style.display = 'grid';
     document.getElementById('view-mistakes-btn').style.display = 'block';
     document.getElementById('leaderboard-btn').style.display = 'block';
